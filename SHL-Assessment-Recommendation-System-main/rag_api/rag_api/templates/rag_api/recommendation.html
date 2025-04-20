@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SHL Assessment Recommendation System</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background-color: #ff6200;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .top-bar .close-btn {
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .top-bar .deploy {
+            color: #fff;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 25%;
+            background-color: #f9f9f9;
+            position: fixed;
+            height: 100%;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar p {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .sidebar strong {
+            font-size: 24px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 27%;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        h1::before {
+            content: "🔍 ";
+            margin-right: 10px;
+        }
+
+        .input-section {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            font-size: 18px;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #ff6200;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e65c00;
+        }
+
+        .recommendation {
+            margin-top: 20px;
+        }
+
+        .recommendation h3 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+
+        .recommendation p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .error {
+            font-size: 16px;
+            color: #d32f2f;
+            margin: 10px 0;
+        }
+
+        table {
+            font-size: 16px;
+            color: #333;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <span class="close-btn">×</span>
+        <span class="deploy">Deploy</span>
+    </div>
+
+    <div class="sidebar">
+        <p><strong>Lakshay Trehan</strong><br>
+            B.Tech CS Undergraduate at Indraprastha Institute of Information Technology Delhi (IIITD'2026)<br>
+            Passionate Software Engineer 🚀 | Web Developer 💻<br>
+            LLM Enthusiast 🤖 | AI & ML 🧠</p>
+    </div>
+
+    <div class="main-content">
+        <h1>SHL Assessment Recommendation System</h1>
+        <div class="input-section">
+            <form method="post">
+                {% csrf_token %}
+                <label for="query">Enter Job Description or Query:</label><br>
+                <input type="text" id="query" name="query" placeholder="e.g., software engineer skills assessment" value="{{ query }}" />
+                <button type="submit">Get Recommendations</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if assessments %}
+        {% for assessment in assessments %}
+        <div class="recommendation">
+            <h3><a href="{{ assessment.url }}">{{ assessment.name }}</a></h3>
+            <p>{{ assessment.description }}</p>
+            <table>
+                <tr>
+                    <th>Adaptive Support</th>
+                    <td>{{ assessment.adaptive_support }}</td>
+                </tr>
+                <tr>
+                    <th>Remote Support</th>
+                    <td>{{ assessment.remote_support }}</td>
+                </tr>
+                <tr>
+                    <th>Duration (mins)</th>
+                    <td>{{ assessment.duration }}</td>
+                </tr>
+                {% load custom_filters %}
+                <tr>
+                    <th>Test Type</th>
+                    <td>{{ assessment.test_type_str|fix_test_type }}</td>
+                </tr>
+            </table>
+        </div>
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>

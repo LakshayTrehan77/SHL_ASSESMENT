@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>SHL Assessment Recommendation System</title>
+        <style>
+            body {
+                background-color: #0e1117;
+                color: #fafafa;
+                font-size: 18px;
+            }
+
+            table {
+                font-size: 18px;
+                color: #fafafa;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                text-align: left;
+            }
+
+            input,
+            textarea {
+                font-size: 18px;
+                width: 100%;
+                padding: 8px;
+                margin: 5px 0;
+            }
+
+            button {
+                font-size: 18px;
+                padding: 10px 20px;
+            }
+
+            .sidebar p {
+                font-size: 32px;
+                color: #fafafa;
+                text-align: center;
+                line-height: 1.4;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <p><strong>Lakshay Trehan</strong><br>
+                B.Tech CS Undergraduate at Indraprastha Institute of Information Technology Delhi (IIITD'2026)<br>
+                Passionate Software Engineer 🚀 | Web Developer 💻<br>
+                LLM Enthusiast 🤖 | AI & ML 🧠</p>
+        </div>
+        <h1>🔍 SHL Assessment Recommendation System</h1>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="query" placeholder="e.g., software engineer skills assessment"
+                rows="4">{{ query }}</textarea>
+            <button type="submit">Get Recommendations</button>
+        </form>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        {% if assessments %}
+        {% for assessment in assessments %}
+        <h3><a href="{{ assessment.url }}">{{ assessment.name }}</a></h3>
+        <p>{{ assessment.description }}</p>
+        <table>
+            <tr>
+                <th>Adaptive Support</th>
+                <td>{{ assessment.adaptive_support }}</td>
+            </tr>
+            <tr>
+                <th>Remote Support</th>
+                <td>{{ assessment.remote_support }}</td>
+            </tr>
+            <tr>
+                <th>Duration (mins)</th>
+                <td>{{ assessment.duration }}</td>
+            </tr>
+            <tr>
+                <th>Test Type</th>
+                <td>{{ assessment.test_type_str }}</td>
+            </tr>
+        </table>
+        <hr>
+        {% endfor %}
+        {% endif %}
+    </body>
+
+</html>
